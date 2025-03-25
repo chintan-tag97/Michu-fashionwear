@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
 import { Product } from '../../../types';
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase/firebase';
 import { addToCart } from '../../../utils/cartUtils';
 import ProductCard from '../../shared/ProductCard';
+import Header from '../home/Header';
 
 const PopularItems = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -37,7 +37,8 @@ const PopularItems = () => {
         name: product.name,
         price: product.price,
         quantity: 1,
-        image: product.imageUrl
+        imageUrl: product.imageUrl,
+        productId: product.id
       });
       // Show success message or update UI
       alert('Product added to cart successfully!');
@@ -60,11 +61,13 @@ const PopularItems = () => {
   }
 
   return (
+    <div>
+      <Header/>
     <div className="min-h-screen bg-gradient-to-b from-rose-50 to-white py-12">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-serif font-bold text-rose-800 mb-4">
-            All Popular Products
+            All  Products
           </h1>
           <p className="text-rose-600 text-lg max-w-2xl mx-auto">
             Explore our complete collection of fashion pieces
@@ -83,6 +86,7 @@ const PopularItems = () => {
           ))}
         </div>
       </div>
+    </div>
     </div>
   );
 };

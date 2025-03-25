@@ -52,7 +52,6 @@ const AddProduct = ({ onProductAdded }: AddProductProps) => {
       setSuccess('Product added successfully!');
       onProductAdded();
       
-      // Reset form
       setFormData({
         name: '',
         price: 0,
@@ -112,7 +111,7 @@ const AddProduct = ({ onProductAdded }: AddProductProps) => {
   ];
 
   return (
-    <div className="relative min-h-[1480px]">
+    <div className="relative min-h-[780px]">
      
       <div className="relative z-10">
         <FormComponent

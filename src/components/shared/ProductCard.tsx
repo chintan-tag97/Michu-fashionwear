@@ -44,7 +44,7 @@ const ProductCard = ({ product, onAddToCart, isAddingToCart = false, variant = '
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <span className={`text-2xl font-bold ${colors.price}`}>
-                ${product.price}
+              ₹{product.price}
               </span>
             </div>
             <button

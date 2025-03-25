@@ -1,83 +1,70 @@
 import { Link } from "react-router-dom";
-import { Category } from "../../../types";
-import { useEffect, useState } from 'react';
-import { collection, getDocs, limit, query } from 'firebase/firestore';
-import { db } from '../../../firebase/firebase';
+import womenImage from "../../../images/Screenshot 2025-03-25 120437.png";
+import menImage from "../../../images/Screenshot 2025-03-25 125030.png";
+import kidsImage from "../../../images/little-girl-studio.jpg";
+import accessoriesImage from "../../../images/top-view-arrangement-different-traveling-elements.jpg";
 
 const Categories = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categoriesRef = collection(db, 'categories');
-        const q = query(categoriesRef, limit(4)); // Limit to 4 categories
-        const querySnapshot = await getDocs(q);
-        const categoriesData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...(doc.data() as Omit<Category, 'id'>)
-        })) as Category[];
-        setCategories(categoriesData);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  if (loading) {
-    return (
-      <section className="py-16 bg-gradient-to-b from-rose-50 to-white">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-xl text-rose-600">Loading categories...</p>
-        </div>
-      </section>
-    );
-  }
+  const categories = [
+    {
+      name: "Women",
+      image: womenImage,
+      description: "Discover our elegant collection of women's fashion",
+      path: "/categoryitems?category=women"
+    },
+    {
+      name: "Men",
+      image: menImage,
+      description: "Explore our stylish men's clothing collection",
+      path: "/categoryitems?category=men"
+    },
+    {
+      name: "Kids",
+      image: kidsImage,
+      description: "Adorable and comfortable clothing for little ones",
+      path: "/categoryitems?category=kids"
+    },
+    {
+      name: "Accessories",
+      image: accessoriesImage,
+      description: "Complete your look with our trendy accessories",
+      path: "/categoryitems?category=accessories"
+    }
+  ];
 
   return (
-    <section className="py-16 bg-gradient-to-b from-rose-50 to-white">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-serif font-bold text-center mb-4 text-rose-800">
-          Shop by Category
-        </h2>
-        <p className="text-center text-rose-600 mb-12 text-lg max-w-2xl mx-auto">
-          Discover our curated collection of fashion categories, each designed to bring out your unique style
+    <div   className=" mx-auto px-4 py-16 bg-rose-100">
+      <h2 id="category" className="text-3xl font-serif font-bold text-rose-800 text-center mb-12">
+        Shop by Category
+      </h2>
+      <p className="text-center text-rose-600 mb-12 text-lg max-w-2xl mx-auto">
+          Discover our  collection of fashion categories, each designed to bring out your unique style
         </p>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {categories.map((category) => (
-            <Link
-              key={category.id}
-              to={`/category/${category.id}`}
-              className="group"
-            >
-              <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
-                <div className="relative h-64 overflow-hidden">
-                  <img
-                    src={category.image}
-                    alt={category.name}
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-serif font-bold mb-2 text-rose-800 group-hover:text-rose-900 transition-colors duration-200">
-                    {category.name}
-                  </h3>
-                  <p className="text-rose-600 group-hover:text-rose-700 transition-colors duration-200">
-                    {category.description}
-                  </p>
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {categories.map((category) => (
+          <Link
+            key={category.name}
+            to={category.path}
+            className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+          >
+            <div className="aspect-w-1 aspect-h-1">
+              <img
+                src={category.image}
+                alt={category.name}
+                className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <h3 className="text-2xl font-serif font-bold mb-2">{category.name}</h3>
+                <p className="text-sm opacity-90">{category.description}</p>
               </div>
-            </Link>
-          ))}
-        </div>
-        <div className="text-center mt-8">
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <div className="text-center mt-8">
           <Link 
             to="categoryitems" 
             className="inline-block bg-rose-800 text-white px-6 py-2 rounded-lg hover:bg-rose-700 transition-colors duration-200"
@@ -85,8 +72,7 @@ const Categories = () => {
             View All Categories
           </Link>
         </div>
-      </div>
-    </section>
+    </div>
   );
 };
 

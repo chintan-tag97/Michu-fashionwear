@@ -1,15 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { collection, addDoc, getDocs, deleteDoc, doc, query, where, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebase';
-
-interface CartItem {
-  id: string;
-  productId: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  quantity: number;
-}
+import { CartItem } from '../../../types';
 
 interface CartContextType {
   cartItems: CartItem[];
@@ -28,7 +20,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch cart items from Firebase
   const fetchCartItems = async () => {
     try {
       setLoading(true);
@@ -54,11 +45,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const addToCart = async (product: any) => {
     try {
       setError(null);
-      // Check if product already exists in cart
       const existingItem = cartItems.find(item => item.productId === product.id);
       
       if (existingItem) {
-        // Update quantity in Firebase
         const cartRef = collection(db, 'cart');
         const q = query(cartRef, where('productId', '==', product.id));
         const querySnapshot = await getDocs(q);
@@ -75,7 +64,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           });
         }
       } else {
-        // Add new item to Firebase
         await addDoc(collection(db, 'cart'), {
           productId: product.id,
           name: product.name,
@@ -85,7 +73,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
       }
       
-      // Refresh cart items
       await fetchCartItems();
     } catch (error) {
       console.error('Error adding to cart:', error);

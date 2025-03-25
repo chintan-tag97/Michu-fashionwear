@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getCartItemCount } from "../../../utils/cartUtils";
-// import logo from "../../images/IMG_20250324_205652.jpg";
+// import logo from "../../../images/logo.jpg";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,12 +28,12 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-gradient-to-r from-rose-50 to-pink-50 shadow-sm sticky top-0 z-50 transition-all duration-300 border-b border-rose-100">
+    <header id="header"className="bg-rose-100 shadow-sm sticky top-0 z-50 transition-all duration-300 border-b border-rose-100">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-24">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-3">
-              {/* <img src={logo} alt="Michu FashionWear Logo" className="h-12 w-auto" /> */}
+              {/* <img src={logo} alt="Michu FashionWear Logo" className="h-12 w-auto " /> */}
               <span className="text-4xl font-serif font-bold text-rose-800 hover:text-rose-900 transition-colors duration-200 tracking-tight">
                 Michu 
               </span>

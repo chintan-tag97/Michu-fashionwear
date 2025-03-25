@@ -3,6 +3,7 @@ import { collection, getDocs, deleteDoc, doc, query, orderBy, writeBatch } from 
 import { db } from '../../firebase/firebase';
 import type { Product } from '../../types/index';
 import AddProduct from './AddProduct';
+import Header from '../user/home/Header';
 
 const ProductManagement = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -39,7 +40,7 @@ const ProductManagement = () => {
       try {
         setError(null);
         await deleteDoc(doc(db, 'products', productId));
-        await fetchProducts(); // Refresh the list
+        await fetchProducts(); 
       } catch (error) {
         console.error('Error deleting product:', error);
         setError('Failed to delete product. Please try again.');
@@ -84,11 +85,12 @@ const ProductManagement = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className="min-h-screen bg-rose-50 p-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-            <p className="text-xl text-gray-600">Loading products... </p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-900 mx-auto mb-4"></div>
+            <p className="text-xl text-rose-600">Loading products...
+           </p>
           </div>
         </div>
       </div>
@@ -96,23 +98,24 @@ const ProductManagement = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div> <Header/>
+    <div className="min-h-screen bg-rose-50 p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Product Management</h1>
-            <p className="text-sm text-gray-600 mt-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-rose-900">Product Management</h1>
+            <p className="text-sm text-rose-600 mt-1">
               Total Products: {products.length}
             </p>
           </div>
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <button
               onClick={handleClearAllProducts}
               disabled={isClearing || products.length === 0}
-              className={`px-4 py-2 text-white rounded-md transition-colors flex items-center gap-2
+              className={`px-4 py-2 text-white rounded-md transition-colors flex items-center justify-center gap-2 w-full sm:w-auto
                 ${isClearing || products.length === 0 
-                  ? 'bg-gray-400 cursor-not-allowed' 
-                  : 'bg-red-600 hover:bg-red-700'}`}
+                  ? 'bg-rose-400 cursor-not-allowed' 
+                  : 'bg-rose-600 hover:bg-rose-700'}`}
             >
               {isClearing ? (
                 <>
@@ -125,7 +128,7 @@ const ProductManagement = () => {
             </button>
             <button
               onClick={() => setShowAddForm(!showAddForm)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-rose-600 text-white rounded-md hover:bg-rose-700 transition-colors w-full sm:w-auto"
             >
               {showAddForm ? 'Cancel' : 'Add New Product'}
             </button>
@@ -133,7 +136,7 @@ const ProductManagement = () => {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
+          <div className="mb-6 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-700">
             {error}
           </div>
         )}
@@ -145,27 +148,27 @@ const ProductManagement = () => {
         )}
 
         <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-rose-200">
+            <thead className="bg-rose-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-rose-500 uppercase tracking-wider">
                   Image
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-rose-500 uppercase tracking-wider">
                   Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-rose-500 uppercase tracking-wider">
                   Price
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-rose-500 uppercase tracking-wider">
                   Popular
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-rose-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-rose-200">
               {products.map((product: Product) => (
                 <tr key={product.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -179,13 +182,13 @@ const ProductManagement = () => {
                     />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                    <div className="text-sm text-gray-500 truncate max-w-xs">
+                    <div className="text-sm font-medium text-rose-900">{product.name}</div>
+                    <div className="text-sm text-rose-500 truncate max-w-xs">
                       {product.description}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">₹{product.price}</div>
+                    <div className="text-sm text-rose-900">₹{product.price}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {product.isPopular ? (
@@ -193,7 +196,7 @@ const ProductManagement = () => {
                         Yes
                       </span>
                     ) : (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-rose-100 text-rose-800">
                         No
                       </span>
                     )}
@@ -201,7 +204,7 @@ const ProductManagement = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button
                       onClick={() => handleDeleteProduct(product.id)}
-                      className="text-red-600 hover:text-red-900"
+                      className="text-rose-600 hover:text-rose-900"
                     >
                       Delete
                     </button>
@@ -214,13 +217,13 @@ const ProductManagement = () => {
 
         {products.length === 0 && (
           <div className="text-center bg-white rounded-lg shadow-sm p-8 mt-8">
-            <p className="text-gray-600 mb-4">
+            <p className="text-rose-600 mb-4">
               No products available.
             </p>
             {!showAddForm && (
               <button
                 onClick={() => setShowAddForm(true)}
-                className="text-blue-600 hover:text-blue-800 font-medium"
+                className="text-rose-600 hover:text-rose-800 font-medium"
               >
                 Click here to add your first product
               </button>
@@ -228,6 +231,7 @@ const ProductManagement = () => {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 };

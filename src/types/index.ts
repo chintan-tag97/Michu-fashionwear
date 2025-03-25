@@ -1,5 +1,5 @@
 export interface SliderContent {
-  url: string;
+  imageUrl: string;
   alt: string;
   title: string;
   description: string;
@@ -9,7 +9,7 @@ export interface SliderContent {
 export interface Category {
   id: string;
   name: string;
-  image: string;
+  imageUrl: string;
   description: string;
 }
 
@@ -19,7 +19,8 @@ export interface CartItem {
   name: string;
   price: number;
   quantity: number;
-  image: string;
+  imageUrl: string;
+  productId: string;
 }
 
 export interface OrderDetails {

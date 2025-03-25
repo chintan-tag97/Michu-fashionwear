@@ -38,18 +38,18 @@ const PopularProducts = () => {
   }
 
   return (
-    <div className="relative  overflow-hidden">
+    <div id ="popular" className="relative  overflow-hidden">
       <div className="absolute inset-0 bg-[url('src/images/front-view-woman-posing-with-monochrome-outfit.jpg')]  bg-top opacity-10"></div>
     <section className="py-20 relative overflow-hidden ">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16">
+      <div className="container mx-auto px-2 relative z-10">
+        <div className="text-center">
           <h2 className="text-5xl font-bold text-rose-700 mb-4">
             Popular Products
           </h2>
           <div className="w-24 h-1 bg-rose-700 mx-auto"></div>
         </div>
 
-        <div className="relative flex justify-center items-center min-h-[600px] max-w-[1400px] mx-auto perspective-1000">
+        <div className="relative flex justify-center items-center min-h-[500px] max-w-[1400px] mx-auto perspective-1000">
           {products.map((product, index) => {
             const offset = index - activeIndex;
             const isActive = index === activeIndex;
@@ -109,7 +109,7 @@ const PopularProducts = () => {
           })}
         </div>
 
-        <div className="flex justify-center mt-8 gap-2">
+        <div className="flex justify-center  gap-2">
           {products.map((_, index) => (
             <button
               key={index}
