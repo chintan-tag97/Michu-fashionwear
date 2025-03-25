@@ -37,6 +37,7 @@ export interface Product {
   description: string;
   isPopular: boolean;
   createdAt: string;
+  categoriesid: string;
 }
 
 export interface ProductData extends Omit<Product, 'id'> {

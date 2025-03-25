@@ -1,7 +1,15 @@
 import { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
-import type { ProductData } from './types';
+import type { ProductData } from '../../types/index';
+import FormComponent from '../shared/FormComponent';
+
+const categories = [
+  { id: 'women', name: 'Women' },
+  { id: 'men', name: 'Men' },
+  { id: 'kids', name: 'Kids' },
+  { id: 'accessories', name: 'Accessories' }
+];
 
 interface AddProductProps {
   onProductAdded: () => void;
@@ -14,17 +22,17 @@ const AddProduct = ({ onProductAdded }: AddProductProps) => {
     imageUrl: '',
     description: '',
     isPopular: false,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
+    categoriesid: 'women' // Default category
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
+  const handleChange = (name: string, value: any) => {
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+      [name]: value
     }));
   };
 
@@ -51,7 +59,8 @@ const AddProduct = ({ onProductAdded }: AddProductProps) => {
         imageUrl: '',
         description: '',
         isPopular: false,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        categoriesid: 'women'
       });
     } catch (error) {
       console.error('Error adding product:', error);
@@ -61,104 +70,62 @@ const AddProduct = ({ onProductAdded }: AddProductProps) => {
     }
   };
 
+  const formFields = [
+    {
+      name: 'name',
+      label: 'Product Name',
+      type: 'text',
+      value: formData.name
+    },
+    {
+      name: 'categoriesid',
+      label: 'Category',
+      type: 'select',
+      value: formData.categoriesid,
+      options: categories.map(cat => ({ value: cat.id, label: cat.name }))
+    },
+    {
+      name: 'price',
+      label: 'Price',
+      type: 'text',
+      value: formData.price
+    },
+    {
+      name: 'imageUrl',
+      label: 'Image URL',
+      type: 'text',
+      value: formData.imageUrl
+    },
+    {
+      name: 'description',
+      label: 'Description',
+      type: 'textarea',
+      value: formData.description,
+      rows: 4
+    },
+    {
+      name: 'isPopular',
+      label: 'Add to Popular Products',
+      type: 'checkbox',
+      value: formData.isPopular
+    }
+  ];
+
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Add New Product</h2>
-      
-      {error && (
-        <div className="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
-          {error}
-        </div>
-      )}
-
-      {success && (
-        <div className="mb-4 p-4 bg-green-50 border-l-4 border-green-500 text-green-700">
-          {success}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Product Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Price
-          </label>
-          <input
-            type="number"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            required
-            min="0"
-            step="0.01"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Image URL
-          </label>
-          <input
-            type="url"
-            name="imageUrl"
-            value={formData.imageUrl}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Description
-          </label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            required
-            rows={4}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            name="isPopular"
-            checked={formData.isPopular}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-          />
-          <label className="ml-2 block text-sm text-gray-700">
-            Add to Popular Products
-          </label>
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-            loading ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
-        >
-          {loading ? 'Adding Product...' : 'Add Product'}
-        </button>
-      </form>
+    <div className="relative min-h-[1480px]">
+     
+      <div className="relative z-10">
+        <FormComponent
+          fields={formFields}
+          onSubmit={handleSubmit}
+          onChange={handleChange}
+          submitButtonText="Add Product"
+          loading={loading}
+          error={error}
+          success={success}
+          title="Add New Product"
+        />
+      </div>
     </div>
   );
 };

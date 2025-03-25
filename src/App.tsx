@@ -1,14 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'
-import Home from './components/layout/Home'
-import Products from './components/home/PopularProducts';
-import Categories from './components/home/Categories';
-import CategoryItems from './components/pages/CategoryItems';
-import PopularItems from './components/pages/PopularItems';
+import Products from './components/user/home/PopularProducts';
+import Categories from './components/user/home/Categories';
+import CategoryItems from './components/user/pages/CategoryItems';
+import PopularItems from './components/user/pages/PopularItems';
 import ProductManagement from './components/admin/ProductManagement';
-import Cart from './components/cart/Cart';
-import { CartProvider } from './components/cart/CartContext';
-import Hero from './components/home/Hero';
+import Cart from './components/user/cart/Cart';
+import { CartProvider } from './components/user/cart/CartContext';
+import Home from './components/user/layout/Home';
 
 const App = () => {
   
@@ -23,8 +22,6 @@ const App = () => {
           <Route path="/categoryitems" element={<CategoryItems />} />
           <Route path="/popularitems" element={<PopularItems />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/hero" element={<Hero />} />
-
           <Route path="/admin" element={<ProductManagement />} />
         </Routes>
       </Router>
